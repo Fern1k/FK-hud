@@ -18,6 +18,8 @@ const gearElement = document.querySelector('[gear]');
 const tunroverBarElement = document.querySelector('[turnoverBar]');
 const voiceRangeIndicator = document.querySelector('#voiceRangeIndicator');
 const voiceRangeValue = document.querySelector('.range-value');
+const fuelFillElement = document.querySelector('[fuel]');
+const fuelPercentageElement = document.querySelector('[fuel-percentage]');
 
 // Voice range indicator timer
 let voiceRangeTimer = null;
@@ -113,7 +115,7 @@ const onCarHudUpdate = ({ data }) => {
     if (data.isInVehicle != undefined && data.isInVehicle != null) {
         if (data.isInVehicle == true) {
             carhud.classList.remove('hidden');
-            carhudClassic.classList.remove('hidden');
+            carhudClassic.classList.add('hidden'); // Only show the new modern car HUD
         }
         else {
             carhud.classList.add('hidden');
@@ -147,6 +149,12 @@ const onCarHudUpdate = ({ data }) => {
     }
     if (data.rpm) {
         rpmElement.innerHTML = data.rpm + ` rpm/<span class="stroked-text yellow">${cache.gear}</span>`;
+    }
+    if (data.fuel !== undefined && data.fuel !== null) {
+        if (fuelFillElement && fuelPercentageElement) {
+            fuelFillElement.style.height = `${data.fuel}%`;
+            fuelPercentageElement.textContent = `${Math.round(data.fuel)}%`;
+        }
     }
 };
 // Event listeners

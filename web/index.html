@@ -34,9 +34,10 @@
         </div>
         <div class="right">
             <img
-                src="./server-logo.png"
+                src="server-logo.png"
                 alt="Server Logo"
                 class="server-logo"
+                onerror="this.style.display='none'"
             >
         </div>
     </div>
@@ -98,6 +99,17 @@
             <div class="info-speed">
                 <h1 speed>104</h1>
                 <p>KM/H</p>
+            </div>
+        </div>
+        <div class="fuel-indicator">
+            <div class="fuel-icon">
+                <i class="fa-solid fa-gas-pump"></i>
+            </div>
+            <div class="fuel-bar">
+                <div class="fuel-fill" fuel></div>
+            </div>
+            <div class="fuel-text">
+                <span fuel-percentage>75%</span>
             </div>
         </div>
     </div>    

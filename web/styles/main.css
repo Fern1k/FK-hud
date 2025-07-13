@@ -7,6 +7,7 @@
   --thirst-color: #039be5;
   --hunger-color: #ff9800;
   --voice-color: #757575;
+  --fuel-color: #ffc107;
 }
 
 * {
@@ -24,8 +25,8 @@ body * {
   right: 20px;
   top: 20px;
   display: flex;
-  align-items: start;
-  gap: 22px;
+  align-items: flex-start;
+  gap: 15px;
 }
 
 .watermark .text {
@@ -80,14 +81,16 @@ body * {
 }
 
 .watermark .right .server-logo {
-  height: 48px;
+  height: 40px;
   width: auto;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 4px;
+  max-width: 40px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 6px;
   backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
+  object-fit: contain;
 }
 
 .watermark .right .id {
@@ -289,13 +292,20 @@ body * {
   right: 250px;
   bottom: 250px;
   transition: 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 40px;
 }
 .carhud .speedometer {
-  position: absolute;
+  position: relative;
   width: 300px;
   aspect-ratio: 1/1;
   transform: scale(0.6);
   margin-right: 25px;
+  background: rgba(20, 20, 20, 0.8);
+  border-radius: 50%;
+  border: 2px solid rgba(59, 153, 236, 0.3);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(59, 153, 236, 0.1);
 }
 .carhud .speedometer .tacho {
   width: 330px;
@@ -336,19 +346,21 @@ body * {
   top: 50%;
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: center;
 }
 .carhud .info-speed h1 {
   color: #fff;
   line-height: 55px;
   font-size: 4rem;
   font-weight: 800;
+  text-shadow: 0 0 20px rgba(59, 153, 236, 0.4);
 }
 .carhud .info-speed p {
-  color: #a3a3a3;
-  font-weight: 500;
-  font-size: 20px;
-  margin-top: 12px;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 18px;
+  margin-top: 8px;
+  text-shadow: 0 0 10px rgba(59, 153, 236, 0.3);
 }
 .carhud .location {
   color: #fff;
@@ -367,6 +379,54 @@ body * {
   margin-bottom: 15px;
   font-weight: 600;
   font-size: 14px;
+}
+
+/* Fuel Indicator */
+.fuel-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: rgba(20, 20, 20, 0.8);
+  border-radius: 12px;
+  padding: 20px 15px;
+  border: 2px solid rgba(255, 193, 7, 0.3);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 193, 7, 0.1);
+  backdrop-filter: blur(4px);
+}
+
+.fuel-indicator .fuel-icon {
+  color: var(--fuel-color);
+  font-size: 24px;
+  text-shadow: 0 0 15px rgba(255, 193, 7, 0.6);
+}
+
+.fuel-indicator .fuel-bar {
+  width: 8px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  position: relative;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.fuel-indicator .fuel-bar .fuel-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, var(--fuel-color), #ffeb3b);
+  border-radius: 4px;
+  height: 75%;
+  box-shadow: 0 0 10px rgba(255, 193, 7, 0.4);
+  transition: height 0.3s ease;
+}
+
+.fuel-indicator .fuel-text {
+  color: var(--fuel-color);
+  font-weight: 600;
+  font-size: 14px;
+  text-shadow: 0 0 10px rgba(255, 193, 7, 0.4);
 }
 
 .hidden {
@@ -832,39 +892,56 @@ body * {
   position: fixed;
 }
 
-/* Minimap styling - positioned to bottom-left with minimalist design */
+/* Minimap styling - positioned to bottom-left with HUD-matching design */
 .minimap {
   position: fixed !important;
   bottom: 20px !important;
   left: 20px !important;
   border-radius: 12px !important;
   overflow: hidden !important;
-  background: rgba(20, 20, 20, 0.6) !important;
-  backdrop-filter: blur(4px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  background: rgba(20, 20, 20, 0.8) !important;
+  backdrop-filter: blur(8px) !important;
+  border: 2px solid rgba(59, 153, 236, 0.3) !important;
+  box-shadow: 
+    0 0 30px rgba(0, 0, 0, 0.5) !important,
+    inset 0 0 20px rgba(59, 153, 236, 0.1) !important;
 }
 
 /* GTA V radar element targeting */
 #minimapContainer,
 [data-minimap="true"],
-.minimap-container {
+.minimap-container,
+.minimap-outer {
   position: fixed !important;
   bottom: 20px !important;
   left: 20px !important;
   border-radius: 12px !important;
   overflow: hidden !important;
-  background: rgba(20, 20, 20, 0.6) !important;
-  backdrop-filter: blur(4px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  background: rgba(20, 20, 20, 0.8) !important;
+  backdrop-filter: blur(8px) !important;
+  border: 2px solid rgba(59, 153, 236, 0.3) !important;
+  box-shadow: 
+    0 0 30px rgba(0, 0, 0, 0.5) !important,
+    inset 0 0 20px rgba(59, 153, 236, 0.1) !important;
 }
 
-/* Ensure minimap blips and elements maintain visibility */
+/* Hide any health bar or HUD elements that might appear with minimap */
+.minimap .health-bar,
+.minimap .hud-element,
+#minimapContainer .health-bar,
+#minimapContainer .hud-element,
+[data-minimap="true"] .health-bar,
+[data-minimap="true"] .hud-element {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Ensure minimap blips and elements maintain visibility with HUD styling */
 .minimap .blip,
 #minimapContainer .blip,
 [data-minimap="true"] .blip {
-  opacity: 0.9 !important;
+  opacity: 0.95 !important;
+  filter: drop-shadow(0 0 3px rgba(59, 153, 236, 0.3)) !important;
 }
 
 /* Responsive minimap sizing */
