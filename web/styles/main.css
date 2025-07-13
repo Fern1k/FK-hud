@@ -95,6 +95,11 @@ body * {
   gap: 12px;
 }
 
+.hud-container.new {
+  bottom: 16px;
+  left: 16px;
+}
+
 .hud-container .element {
   --fill: 50%;
   --under-fill: 50%;
@@ -129,6 +134,26 @@ body * {
 }
 
 .hud-container .element[voice] {
+  color: var(--voice-color);
+}
+
+.hud-container .element[health] i {
+  color: var(--health-color);
+}
+
+.hud-container .element[armor] i {
+  color: var(--armor-color);
+}
+
+.hud-container .element[thirst] i {
+  color: var(--thirst-color);
+}
+
+.hud-container .element[hunger] i {
+  color: var(--hunger-color);
+}
+
+.hud-container .element[voice] i {
   color: var(--voice-color);
 }
 
