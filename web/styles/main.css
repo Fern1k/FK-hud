@@ -76,11 +76,6 @@ body * {
 }
 
 .watermark .right .logo {
-  height: 54px;
-  margin-top: -5px;
-}
-
-.watermark .right .server-logo {
   height: 40px;
   width: auto;
   max-width: 40px;
