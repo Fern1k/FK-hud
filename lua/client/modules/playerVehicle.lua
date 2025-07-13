@@ -6,6 +6,9 @@ if not lib then
     lib = exports.ox_lib
 end
 
+cache = cache or {}
+cache.player = cache.player or {}
+
 cache.player.vehicleManager = {
     inVehicle = false,
     vehicle = nil,
@@ -77,6 +80,7 @@ local function startLocationThread()
             end
         end
         updateCarhud('direction', vehicleManager.direction)
+        updateCarhud('heading', GetEntityHeading(cache.player.ped))
         updateCarhud('street', vehicleManager.street)
         updateCarhud('district', {
             district = vehicleManager.district,

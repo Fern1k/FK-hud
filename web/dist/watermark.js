@@ -17,11 +17,11 @@ const formatNumber = (number) => {
 const onWatermarkUpdate = ({ data }) => {
     if (data.action !== 'updateWatermark')
         return;
-    if (data.cash) {
+    if (data.cash && cashElement) {
         const formattedCash = formatNumber(data.cash);
         cashElement.innerText = `${formattedCash}`;
     }
-    if (data.id) {
+    if (data.id && playerServerIdElement) {
         playerServerIdElement.innerText = data.id.toString();
     }
 };
@@ -35,7 +35,9 @@ const getTime = () => {
 };
 const updateTime = () => {
     const time = getTime();
-    timeElement.innerText = time;
+    if (timeElement) {
+        timeElement.innerText = time;
+    }
 };
 // Functions Call & Intervals
 updateTime();
