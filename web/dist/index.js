@@ -43,10 +43,14 @@ const setHudElement = (element, fill) => {
         console.log('FK-HUD: Warning - setHudElement called with null element');
         return; // Zabezpieczenie przed null
     }
-    const underFill = 60 - fill;
-    element.style.setProperty('--fill', `${fill}%`);
+    
+    // Ensure fill is a valid number
+    const fillValue = typeof fill === 'number' ? fill : parseFloat(fill) || 0;
+    const underFill = 60 - fillValue;
+    
+    element.style.setProperty('--fill', `${fillValue}%`);
     element.style.setProperty('--under-fill', `${underFill}%`);
-    console.log(`FK-HUD: Updated element with fill: ${fill}%`);
+    console.log(`FK-HUD: Updated element with fill: ${fillValue}% (original: ${fill})`);
 };
 
 const onUpdate = ({ data }) => {
@@ -88,7 +92,37 @@ const onUpdate = ({ data }) => {
     }
 };
 
-const setValueForAll = (value, elements) => elements.forEach((e) => e.innerText = value);
+const setValueForAll = (value, elements) => {
+    // Extract proper string value from objects if needed
+    let displayValue;
+    if (typeof value === 'object' && value !== null) {
+        // Handle common object structures for better display
+        if (value.name) {
+            displayValue = value.name;
+            console.log(`FK-HUD: Extracted value.name: "${displayValue}" from object:`, value);
+        } else if (value.current !== undefined) {
+            displayValue = value.current;
+            console.log(`FK-HUD: Extracted value.current: "${displayValue}" from object:`, value);
+        } else if (value.value !== undefined) {
+            displayValue = value.value;
+            console.log(`FK-HUD: Extracted value.value: "${displayValue}" from object:`, value);
+        } else {
+            displayValue = JSON.stringify(value);
+            console.log(`FK-HUD: Warning - Object passed without known structure, using JSON:`, value);
+        }
+    } else {
+        displayValue = value;
+        console.log(`FK-HUD: Using direct value: "${displayValue}" (type: ${typeof value})`);
+    }
+    
+    elements.forEach((e) => {
+        if (e) {
+            e.innerText = displayValue;
+        } else {
+            console.log('FK-HUD: Warning - Null element in setValueForAll');
+        }
+    });
+};
 const onVoiceActive = ({ data }) => {
     console.log('FK-HUD: Voice activity update:', data);
     
@@ -138,8 +172,19 @@ const onCarHudUpdate = ({ data }) => {
     }
     
     if (data.direction) {
-        setValueForAll(directions[data.direction], directionElements);
-        console.log(`FK-HUD: Direction updated to ${directions[data.direction]}`);
+        // Extract proper direction value if it's an object
+        let directionValue;
+        if (typeof data.direction === 'object' && data.direction !== null) {
+            directionValue = data.direction.direction || data.direction.value || data.direction.name || JSON.stringify(data.direction);
+            console.log(`FK-HUD: Extracted direction value "${directionValue}" from object:`, data.direction);
+        } else {
+            directionValue = String(data.direction);
+            console.log(`FK-HUD: Using direct direction value: "${directionValue}"`);
+        }
+        
+        const directionText = directions[directionValue] || directionValue;
+        setValueForAll(directionText, directionElements);
+        console.log(`FK-HUD: Direction updated to ${directionText} (from: ${directionValue})`);
     }
     
     if (data.heading) {
@@ -150,43 +195,117 @@ const onCarHudUpdate = ({ data }) => {
     }
     
     if (data.street) {
+        // Extract proper street name if it's an object
+        let streetName;
+        if (typeof data.street === 'object' && data.street !== null) {
+            streetName = data.street.name || data.street.street || JSON.stringify(data.street);
+            console.log(`FK-HUD: Extracted street name "${streetName}" from object:`, data.street);
+        } else {
+            streetName = String(data.street);
+            console.log(`FK-HUD: Using direct street value: "${streetName}"`);
+        }
+        
         // Only update street in the new carhud (not classic) to avoid duplicates
         const newCarhudStreet = document.querySelector('.carhud [street]');
         if (newCarhudStreet) {
-            newCarhudStreet.innerText = data.street;
-            console.log(`FK-HUD: Street name updated to "${data.street}"`);
+            newCarhudStreet.innerText = streetName;
+            console.log(`FK-HUD: Street name updated to "${streetName}"`);
         } else {
             console.log('FK-HUD: Warning - Street element not found in new carhud');
         }
     }
     
-    if (data.speed) {
-        setValueForAll(`${data.speed}`, speedElements);
-        console.log(`FK-HUD: Speed updated to ${data.speed} km/h`);
+    if (data.speed !== undefined && data.speed !== null) {
+        // Extract proper speed value if it's an object
+        let speedValue;
+        if (typeof data.speed === 'object' && data.speed !== null) {
+            speedValue = data.speed.value || data.speed.speed || JSON.stringify(data.speed);
+            console.log(`FK-HUD: Extracted speed value "${speedValue}" from object:`, data.speed);
+        } else {
+            speedValue = String(data.speed);
+            console.log(`FK-HUD: Using direct speed value: "${speedValue}"`);
+        }
+        
+        setValueForAll(speedValue, speedElements);
+        console.log(`FK-HUD: Speed updated to ${speedValue} km/h`);
     }
     
-    if (data.gear) {
-        setValueForAll(data.gear, gearElements);
-        cache.gear = data.gear;
-        console.log(`FK-HUD: Gear updated to "${data.gear}"`);
+    if (data.gear !== undefined && data.gear !== null) {
+        // Extract proper gear value if it's an object
+        let gearValue;
+        if (typeof data.gear === 'object' && data.gear !== null) {
+            gearValue = data.gear.current || data.gear.gear || data.gear.value || JSON.stringify(data.gear);
+            console.log(`FK-HUD: Extracted gear value "${gearValue}" from object:`, data.gear);
+        } else {
+            gearValue = String(data.gear);
+            console.log(`FK-HUD: Using direct gear value: "${gearValue}"`);
+        }
+        
+        setValueForAll(gearValue, gearElements);
+        cache.gear = gearValue;
+        console.log(`FK-HUD: Gear updated to "${gearValue}"`);
     }
     
-    if (data.tunrover) {
-        let mappedEl = (data.tunrover / 100) * 75;
-        tunroverBarElement.setAttribute('stroke-dasharray', `${mappedEl}, 100`);
-        console.log(`FK-HUD: RPM bar updated to ${data.tunrover}% (mapped: ${mappedEl})`);
+    if (data.tunrover !== undefined && data.tunrover !== null) {
+        // Extract proper RPM value if it's an object
+        let rpmValue;
+        if (typeof data.tunrover === 'object' && data.tunrover !== null) {
+            rpmValue = data.tunrover.value || data.tunrover.rpm || parseFloat(JSON.stringify(data.tunrover)) || 0;
+            console.log(`FK-HUD: Extracted RPM value "${rpmValue}" from object:`, data.tunrover);
+        } else {
+            rpmValue = parseFloat(data.tunrover) || 0;
+            console.log(`FK-HUD: Using direct RPM value: "${rpmValue}"`);
+        }
+        
+        let mappedEl = (rpmValue / 100) * 75;
+        if (tunroverBarElement) {
+            tunroverBarElement.setAttribute('stroke-dasharray', `${mappedEl}, 100`);
+            console.log(`FK-HUD: RPM bar updated to ${rpmValue}% (mapped: ${mappedEl})`);
+        } else {
+            console.log('FK-HUD: Warning - RPM bar element not found');
+        }
     }
     
     if (data.district) {
-        districtElement.innerHTML = `
-            ${data.district.district} <span style="color: #aa18ff">/ ${data.district.zone}</span>
-        `;
-        console.log(`FK-HUD: District updated to "${data.district.district} / ${data.district.zone}"`);
+        // Extract proper district information
+        let districtInfo;
+        if (typeof data.district === 'object' && data.district !== null) {
+            const districtName = data.district.district || data.district.name || 'Unknown District';
+            const zoneName = data.district.zone || data.district.area || 'Unknown Zone';
+            districtInfo = { district: districtName, zone: zoneName };
+            console.log(`FK-HUD: Extracted district info:`, districtInfo);
+        } else {
+            districtInfo = { district: String(data.district), zone: 'Unknown Zone' };
+            console.log(`FK-HUD: Using direct district value: "${data.district}"`);
+        }
+        
+        if (districtElement) {
+            districtElement.innerHTML = `
+                ${districtInfo.district} <span style="color: #aa18ff">/ ${districtInfo.zone}</span>
+            `;
+            console.log(`FK-HUD: District updated to "${districtInfo.district} / ${districtInfo.zone}"`);
+        } else {
+            console.log('FK-HUD: Warning - District element not found');
+        }
     }
     
-    if (data.rpm) {
-        rpmElement.innerHTML = data.rpm + ` rpm/<span class="stroked-text yellow">${cache.gear}</span>`;
-        console.log(`FK-HUD: RPM updated to ${data.rpm}`);
+    if (data.rpm !== undefined && data.rpm !== null) {
+        // Extract proper RPM value if it's an object
+        let rpmValue;
+        if (typeof data.rpm === 'object' && data.rpm !== null) {
+            rpmValue = data.rpm.value || data.rpm.rpm || parseFloat(JSON.stringify(data.rpm)) || 0;
+            console.log(`FK-HUD: Extracted RPM display value "${rpmValue}" from object:`, data.rpm);
+        } else {
+            rpmValue = data.rpm;
+            console.log(`FK-HUD: Using direct RPM display value: "${rpmValue}"`);
+        }
+        
+        if (rpmElement) {
+            rpmElement.innerHTML = rpmValue + ` rpm/<span class="stroked-text yellow">${cache.gear}</span>`;
+            console.log(`FK-HUD: RPM display updated to ${rpmValue}`);
+        } else {
+            console.log('FK-HUD: Warning - RPM element not found');
+        }
     }
     
     if (data.fuel !== undefined && data.fuel !== null) {
