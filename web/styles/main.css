@@ -924,7 +924,7 @@ body * {
   box-shadow: 
     0 0 30px rgba(59, 153, 236, 0.4),
     inset 0 0 30px rgba(59, 153, 236, 0.1);
-  animation: voiceRangePulse 2s ease-in-out infinite;
+  animation: voiceRangePulse 1.5s ease-in-out infinite;
   position: relative;
 }
 
@@ -968,8 +968,8 @@ body * {
     opacity: 0.6;
   }
   50% {
-    transform: scale(1.1);
-    opacity: 0.8;
+    transform: scale(1.05);
+    opacity: 0.9;
   }
   100% {
     transform: scale(1);

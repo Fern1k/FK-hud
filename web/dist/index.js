@@ -92,11 +92,11 @@ const showVoiceRangeIndicator = (range) => {
     voiceRangeIndicator.classList.remove('hidden');
     voiceRangeIndicator.classList.add('visible');
     
-    // Hide after 3 seconds
+    // Hide after 1.5 seconds for more dynamic feel
     voiceRangeTimer = setTimeout(() => {
         voiceRangeIndicator.classList.remove('visible');
         voiceRangeIndicator.classList.add('hidden');
-    }, 3000);
+    }, 1500);
 };
 
 const onVoiceRange = ({ data }) => {
