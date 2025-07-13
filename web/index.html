@@ -34,9 +34,9 @@
         </div>
         <div class="right">
             <img
-                src="server-logo.png"
+                src="logo.png"
                 alt="Server Logo"
-                class="server-logo"
+                class="logo"
                 onerror="this.style.display='none'"
             >
         </div>
@@ -59,16 +59,11 @@
         </div>
     </div>
     
-    <!-- Voice Range Indicator -->
-    <div id="voiceRangeIndicator" class="voice-range-indicator hidden">
-        <div class="voice-range-circle"></div>
-        <div class="voice-range-text">
-            <span class="range-value">25m</span>
-            <span class="range-label">Voice Range</span>
-        </div>
-    </div>
     <div class="carhud newCarhud hidden" carhud>
         <div class="location">
+            <div class="fuel element" fuel>
+                <i class="fa-solid fa-gas-pump"></i>
+            </div>
             <div class="direction">
                 <i class="fa-light fa-location-arrow" heading></i>
                 <p direction>North-East</p>
@@ -101,16 +96,9 @@
                 <p>KM/H</p>
             </div>
         </div>
-        <div class="fuel-indicator">
-            <div class="fuel-icon">
-                <i class="fa-solid fa-gas-pump"></i>
-            </div>
-            <div class="fuel-bar">
-                <div class="fuel-fill" fuel></div>
-            </div>
-            <div class="fuel-text">
-                <span fuel-percentage>75%</span>
-            </div>
+        <div class="gear-display">
+            <p>GEAR</p>
+            <span gear>1</span>
         </div>
     </div>    
     <div class="carhud-classic hidden" carhudClassic>

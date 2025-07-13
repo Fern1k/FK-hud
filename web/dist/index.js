@@ -14,15 +14,9 @@ const directionElements = document.querySelectorAll('[direction]');
 const headingElement = document.querySelector('[heading]');
 const streetElements = document.querySelectorAll('[street]');
 const speedElements = document.querySelectorAll('[speed]');
-const gearElement = document.querySelector('[gear]');
+const gearElements = document.querySelectorAll('[gear]');
 const tunroverBarElement = document.querySelector('[turnoverBar]');
-const voiceRangeIndicator = document.querySelector('#voiceRangeIndicator');
-const voiceRangeValue = document.querySelector('.range-value');
-const fuelFillElement = document.querySelector('[fuel]');
-const fuelPercentageElement = document.querySelector('[fuel-percentage]');
-
-// Voice range indicator timer
-let voiceRangeTimer = null;
+const fuelElement = document.querySelector('[fuel]');
 
 // Functions
 const setHudElement = (element, fill) => {
@@ -77,37 +71,6 @@ const directions = {
 const cache = {
     gear: 0
 };
-
-// Voice range indicator functions
-const showVoiceRangeIndicator = (range) => {
-    if (!voiceRangeIndicator || !voiceRangeValue) return;
-    
-    // Clear any existing timer
-    if (voiceRangeTimer) {
-        clearTimeout(voiceRangeTimer);
-    }
-    
-    // Update the range value
-    voiceRangeValue.textContent = `${range}m`;
-    
-    // Show the indicator
-    voiceRangeIndicator.classList.remove('hidden');
-    voiceRangeIndicator.classList.add('visible');
-    
-    // Hide after 1.5 seconds for more dynamic feel
-    voiceRangeTimer = setTimeout(() => {
-        voiceRangeIndicator.classList.remove('visible');
-        voiceRangeIndicator.classList.add('hidden');
-    }, 1500);
-};
-
-const onVoiceRange = ({ data }) => {
-    if (data.action !== 'showVoiceRange') return;
-    
-    if (data.range) {
-        showVoiceRangeIndicator(data.range);
-    }
-};
 const onCarHudUpdate = ({ data }) => {
     var _a;
     if (data.action !== 'updateCarhud')
@@ -129,13 +92,17 @@ const onCarHudUpdate = ({ data }) => {
         headingElement.style.transform = `rotate(${-45 + data.heading}deg)`;
     }
     if (data.street) {
-        setValueForAll(data.street, streetElements);
+        // Only update street in the new carhud (not classic) to avoid duplicates
+        const newCarhudStreet = document.querySelector('.carhud [street]');
+        if (newCarhudStreet) {
+            newCarhudStreet.innerText = data.street;
+        }
     }
     if (data.speed) {
         setValueForAll(`${data.speed}`, speedElements);
     }
     if (data.gear) {
-        gearElement.innerText = data.gear;
+        setValueForAll(data.gear, gearElements);
         cache.gear = data.gear;
     }
     if (data.tunrover) {
@@ -151,9 +118,8 @@ const onCarHudUpdate = ({ data }) => {
         rpmElement.innerHTML = data.rpm + ` rpm/<span class="stroked-text yellow">${cache.gear}</span>`;
     }
     if (data.fuel !== undefined && data.fuel !== null) {
-        if (fuelFillElement && fuelPercentageElement) {
-            fuelFillElement.style.height = `${data.fuel}%`;
-            fuelPercentageElement.textContent = `${Math.round(data.fuel)}%`;
+        if (fuelElement) {
+            setHudElement(fuelElement, data.fuel);
         }
     }
 };
@@ -161,4 +127,3 @@ const onCarHudUpdate = ({ data }) => {
 window.addEventListener('message', onUpdate);
 window.addEventListener('message', onVoiceActive);
 window.addEventListener('message', onCarHudUpdate);
-window.addEventListener('message', onVoiceRange);
