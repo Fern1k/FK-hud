@@ -1007,7 +1007,30 @@ div[style*="background: rgb(0, 100, 255)"],
 /* Hide any bottom bars in minimap area */
 .minimap > div:last-child[style*="bottom"],
 #minimapContainer > div:last-child[style*="bottom"],
-[data-minimap="true"] > div:last-child[style*="bottom"] {
+[data-minimap="true"] > div:last-child[style*="bottom"],
+/* Additional GTA Online element hiding */
+.minimap [class*="hud"],
+.minimap [class*="bar"],
+.minimap [class*="counter"],
+.minimap [class*="meter"],
+#minimapContainer [class*="hud"],
+#minimapContainer [class*="bar"],
+#minimapContainer [class*="counter"],
+#minimapContainer [class*="meter"],
+[data-minimap="true"] [class*="hud"],
+[data-minimap="true"] [class*="bar"],
+[data-minimap="true"] [class*="counter"],
+[data-minimap="true"] [class*="meter"],
+/* Hide money/bank displays */
+.minimap [id*="money"],
+.minimap [id*="bank"],
+.minimap [id*="cash"],
+#minimapContainer [id*="money"],
+#minimapContainer [id*="bank"],
+#minimapContainer [id*="cash"],
+[data-minimap="true"] [id*="money"],
+[data-minimap="true"] [id*="bank"],
+[data-minimap="true"] [id*="cash"] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
