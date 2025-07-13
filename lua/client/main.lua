@@ -10,7 +10,6 @@ client.setupScript = function()
 end
 
 RegisterNetEvent('esx:playerLoaded', client.setupScript)
-CreateThread(client.setupScript)
 
 Citizen.CreateThread(function()
     while true do

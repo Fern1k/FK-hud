@@ -29,7 +29,17 @@ const onUpdate = ({ data }) => {
     if (data.action !== 'updateHud')
         return;
     if (data.health) setHudElement(healthElement, data.health);
-    if (data.armor !== undefined && data.armor !== null) setHudElement(armorElement, data.armor);
+    
+    // Armor visibility logic - show only when value > 0
+    if (data.armor !== undefined && data.armor !== null) {
+        setHudElement(armorElement, data.armor);
+        if (data.armor > 0) {
+            armorElement.classList.remove('hidden-armor');
+        } else {
+            armorElement.classList.add('hidden-armor');
+        }
+    }
+    
     if (data.voice) setHudElement(voiceElement, data.voice);
     // NOWE:
     if (data.thirst !== undefined && data.thirst !== null) setHudElement(thirstElement, data.thirst);

@@ -2,6 +2,13 @@
 :root {
   --primary: #2881bd;
   --bg: #141414;
+  
+  // HUD element colors
+  --health-color: #e53935;
+  --armor-color: #1a237e;
+  --thirst-color: #039be5;
+  --hunger-color: #ff9800;
+  --voice-color: #757575;
 }
 
 * {
@@ -48,28 +55,18 @@ body * {
 }
 
 .watermark .text .row .watermark-box {
-  padding: 5px;
+  padding: 8px 12px;
   font-size: 12px;
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--primary);
-  border-radius: 5px;
+  color: #fff;
+  border-radius: 8px;
   position: relative;
-  border: 1px solid var(--primary);
   font-weight: 500;
-}
-
-.watermark .text .row .watermark-box::after {
-  content: "";
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--primary);
-  position: absolute;
-  opacity: 0.3;
-  left: 0;
-  top: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .watermark .right {
@@ -117,6 +114,32 @@ body * {
   position: relative;
 }
 
+// Individual colors for each element type
+.hud-container .element[health] {
+  color: var(--health-color);
+}
+
+.hud-container .element[armor] {
+  color: var(--armor-color);
+}
+
+.hud-container .element[thirst] {
+  color: var(--thirst-color);
+}
+
+.hud-container .element[hunger] {
+  color: var(--hunger-color);
+}
+
+.hud-container .element[voice] {
+  color: var(--voice-color);
+}
+
+// Hide armor when value is 0
+.hud-container .element[armor].hidden-armor {
+  display: none;
+}
+
 .hud-container .element:before {
   content: "";
   position: absolute;
@@ -126,7 +149,7 @@ body * {
   left: -3px;
   z-index: -1;
   border-radius: inherit;
-  background: linear-gradient(to top, var(--primary) var(--fill), rgba(255, 255, 255, 0.1) var(--under-fill));
+  background: linear-gradient(to top, currentColor var(--fill), rgba(255, 255, 255, 0.1) var(--under-fill));
 }
 
 .hud-container .element.active::after {
@@ -136,7 +159,7 @@ body * {
   right: -3px;
   bottom: -3px;
   left: -3px;
-  background: var(--primary);
+  background: currentColor;
   border-radius: inherit;
   opacity: 0.2;
 }
