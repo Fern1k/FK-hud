@@ -42,41 +42,95 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('FK-HUD: Test street name set to "Test Street"');
         }
         
-        // Set test direction
+        // Set initial test direction
         const directionElement = document.querySelector('.carhud [direction]');
         if (directionElement) {
             directionElement.innerText = 'North-East';
             console.log('FK-HUD: Test direction set to "North-East"');
         }
         
+        console.log('FK-HUD: Enhanced testing with multiple data scenarios started...');
+        
         // Simulate data updates every 2 seconds for testing
+        let testCycle = 0;
         setInterval(() => {
-            console.log('FK-HUD: Simulating data update...');
+            console.log(`FK-HUD: Simulating data update cycle ${testCycle}...`);
             
-            // Simulate speed change
-            const randomSpeed = Math.floor(Math.random() * 120) + 20;
-            if (speedElement) {
-                speedElement.innerText = randomSpeed.toString();
-                console.log(`FK-HUD: Simulated speed: ${randomSpeed} km/h`);
+            // Test different data scenarios to ensure compatibility
+            switch(testCycle % 4) {
+                case 0:
+                    // Normal string/number data
+                    const randomSpeed = Math.floor(Math.random() * 120) + 20;
+                    const gears = ['P', 'R', 'N', '1', '2', '3', '4', '5'];
+                    const randomGear = gears[Math.floor(Math.random() * gears.length)];
+                    const randomFuel = Math.floor(Math.random() * 100);
+                    
+                    window.postMessage({
+                        data: {
+                            action: 'updateCarhud',
+                            isInVehicle: true,
+                            speed: randomSpeed,
+                            gear: randomGear,
+                            fuel: randomFuel,
+                            street: 'Test Street ' + Math.floor(Math.random() * 10),
+                            direction: 'N'
+                        }
+                    }, '*');
+                    
+                    console.log(`FK-HUD: Test cycle ${testCycle} - Normal data: speed=${randomSpeed}, gear=${randomGear}, fuel=${randomFuel}`);
+                    break;
+                    
+                case 1:
+                    // Test with object data (should extract properly now)
+                    window.postMessage({
+                        data: {
+                            action: 'updateCarhud',
+                            speed: { value: 75, unit: 'km/h' },
+                            gear: { current: 4, max: 5 },
+                            fuel: { level: 60, capacity: 100 },
+                            street: { name: 'Object Street', id: 123 }
+                        }
+                    }, '*');
+                    
+                    console.log(`FK-HUD: Test cycle ${testCycle} - Object data test`);
+                    break;
+                    
+                case 2:
+                    // Test with mixed data types
+                    window.postMessage({
+                        data: {
+                            action: 'updateCarhud',
+                            speed: '90',  // String number
+                            gear: 3,      // Number
+                            fuel: 45.5,   // Float
+                            street: 'Mixed Type Street',
+                            rpm: 2500,
+                            tunrover: 65
+                        }
+                    }, '*');
+                    
+                    console.log(`FK-HUD: Test cycle ${testCycle} - Mixed data types test`);
+                    break;
+                    
+                case 3:
+                    // Test edge cases
+                    window.postMessage({
+                        data: {
+                            action: 'updateCarhud',
+                            speed: 0,
+                            gear: 'P',
+                            fuel: 0,
+                            street: '',
+                            direction: 'NE'
+                        }
+                    }, '*');
+                    
+                    console.log(`FK-HUD: Test cycle ${testCycle} - Edge cases test`);
+                    break;
             }
             
-            // Simulate gear change
-            const gears = ['P', 'R', 'N', '1', '2', '3', '4', '5'];
-            const randomGear = gears[Math.floor(Math.random() * gears.length)];
-            if (gearElement) {
-                gearElement.innerText = randomGear;
-                console.log(`FK-HUD: Simulated gear: ${randomGear}`);
-            }
-            
-            // Simulate fuel level change
-            const randomFuel = Math.floor(Math.random() * 100);
-            if (fuelElement) {
-                fuelElement.style.setProperty('--fill', `${randomFuel}%`);
-                fuelElement.style.setProperty('--under-fill', `${100 - randomFuel}%`);
-                console.log(`FK-HUD: Simulated fuel: ${randomFuel}%`);
-            }
-            
-        }, 2000);
+            testCycle++;
+        }, 3000);
         
     } else {
         console.log('FK-HUD: Error - Car HUD element not found');
