@@ -93,12 +93,18 @@ local function startCarhudThread()
     while vehicleManager.inVehicle do
             vehicleManager.vehicleSpeed = math.ceil(GetEntitySpeed(vehicleManager.vehicle) * 3.6) or 0
             vehicleManager.rpm = GetVehicleCurrentRpm(vehicleManager.vehicle)
+            
+            -- Add fuel level handling
+            local fuel = GetVehicleFuelLevel(vehicleManager.vehicle)
+            local fuelCapacity = GetVehicleHandlingFloat(vehicleManager.vehicle, 'CHandlingData', 'fPetrolTankVolume')
+            local fuelPercent = (fuel / fuelCapacity) * 100
 
             updateCarhud('gear', getVehRightGear(GetVehicleCurrentGear(vehicleManager.vehicle)))
             local rpmScale = calculateRpmScale(vehicleManager.rpm)
             updateCarhud('speed', vehicleManager.vehicleSpeed)
             updateCarhud('tunrover', convertToPercentage(vehicleManager.rpm))
             updateCarhud('rpm', math.floor(vehicleManager.rpm * rpmScale))
+            updateCarhud('fuel', fuelPercent)
         Wait(50)
     end
 
