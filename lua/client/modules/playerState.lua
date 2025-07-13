@@ -86,6 +86,12 @@ end
 local function updatePlayerVoice(newMode)
     cache.player.voice = voiceModes[newMode]
     updateHud('voice', cache.player.voice)
+    
+    -- Show voice range indicator when voice mode changes
+    SendNUIMessage({
+        action = 'showVoiceRange',
+        range = cache.player.voice
+    })
 end
 
 --@param account table @ JSON Object from ESX
@@ -103,3 +109,14 @@ RegisterNetEvent('esx:playerPedChanged', updatePlayerPed)
 CreateThread(playerHudValuesThread)
 AddEventHandler('pma-voice:setTalkingMode', updatePlayerVoice)
 RegisterNetEvent('esx:setAccountMoney', updatePlayerCash)
+
+-- Voice range key detection
+CreateThread(function()
+    while true do
+        Wait(100) -- More efficient than Wait(0)
+        if IsControlJustPressed(0, 166) then -- F5 key
+            -- The voice range change will be handled by pma-voice:setTalkingMode event
+            -- This is just to ensure we capture manual F5 presses
+        end
+    end
+end)

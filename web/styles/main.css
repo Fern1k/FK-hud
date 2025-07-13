@@ -879,6 +879,124 @@ body * {
   }
 }
 
+/* Voice Range Indicator */
+.voice-range-indicator {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.voice-range-indicator.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.voice-range-indicator.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.voice-range-circle {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 153, 236, 0.2) 0%, rgba(59, 153, 236, 0.1) 40%, rgba(59, 153, 236, 0.05) 70%, transparent 100%);
+  border: 3px solid rgba(59, 153, 236, 0.6);
+  box-shadow: 
+    0 0 30px rgba(59, 153, 236, 0.4),
+    inset 0 0 30px rgba(59, 153, 236, 0.1);
+  animation: voiceRangePulse 2s ease-in-out infinite;
+  position: relative;
+}
+
+.voice-range-circle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: #3b99ec;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(59, 153, 236, 0.8);
+}
+
+.voice-range-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  color: #3b99ec;
+  text-shadow: 0 0 10px rgba(59, 153, 236, 0.5);
+}
+
+.voice-range-text .range-value {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.voice-range-text .range-label {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+@keyframes voiceRangePulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+}
+
+/* Responsive sizing for voice range indicator */
+@media only screen and (max-width: 1300px) {
+  .voice-range-circle {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .voice-range-text .range-value {
+    font-size: 20px;
+  }
+  
+  .voice-range-text .range-label {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-width: 850px) {
+  .voice-range-circle {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .voice-range-text .range-value {
+    font-size: 18px;
+  }
+  
+  .voice-range-text .range-label {
+    font-size: 11px;
+  }
+}
+
 
 
 /*# sourceMappingURL=main.css.map */
