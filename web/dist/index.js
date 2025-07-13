@@ -16,7 +16,7 @@ const streetElements = document.querySelectorAll('[street]');
 const speedElements = document.querySelectorAll('[speed]');
 const gearElement = document.querySelector('[gear]');
 const tunroverBarElement = document.querySelector('[turnoverBar]');
-const fuelElement = document.querySelector('.carhud .fuel.element');
+const fuelElement = document.querySelector('[fuel]');
 
 // Functions
 const setHudElement = (element, fill) => {
