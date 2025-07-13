@@ -97,7 +97,8 @@ body * {
 
 .hud-container.new {
   bottom: 16px;
-  left: 16px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .hud-container .element {
@@ -818,6 +819,64 @@ body * {
 
 .classic .rpm {
   position: fixed;
+}
+
+/* Minimap styling - positioned to bottom-left with minimalist design */
+.minimap {
+  position: fixed !important;
+  bottom: 20px !important;
+  left: 20px !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: rgba(20, 20, 20, 0.6) !important;
+  backdrop-filter: blur(4px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* GTA V radar element targeting */
+#minimapContainer,
+[data-minimap="true"],
+.minimap-container {
+  position: fixed !important;
+  bottom: 20px !important;
+  left: 20px !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: rgba(20, 20, 20, 0.6) !important;
+  backdrop-filter: blur(4px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Ensure minimap blips and elements maintain visibility */
+.minimap .blip,
+#minimapContainer .blip,
+[data-minimap="true"] .blip {
+  opacity: 0.9 !important;
+}
+
+/* Responsive minimap sizing */
+@media only screen and (max-width: 1300px) {
+  .minimap,
+  #minimapContainer,
+  [data-minimap="true"],
+  .minimap-container {
+    bottom: 15px !important;
+    left: 15px !important;
+    border-radius: 10px !important;
+  }
+}
+
+@media only screen and (max-width: 850px) {
+  .minimap,
+  #minimapContainer,
+  [data-minimap="true"],
+  .minimap-container {
+    bottom: 10px !important;
+    left: 10px !important;
+    border-radius: 8px !important;
+  }
 }
 
 
