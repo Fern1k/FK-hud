@@ -89,7 +89,9 @@ const onCarHudUpdate = ({ data }) => {
         setValueForAll(directions[data.direction], directionElements);
     }
     if (data.heading) {
-        headingElement.style.transform = `rotate(${-45 + data.heading}deg)`;
+        if (headingElement) {
+            headingElement.style.transform = `rotate(${-45 + data.heading}deg)`;
+        }
     }
     if (data.street) {
         // Only update street in the new carhud (not classic) to avoid duplicates

@@ -254,15 +254,19 @@ body * {
 
 /* Enhanced street name styling for better visibility */
 .carhud .location .street.box {
-  font-size: 18px;
-  font-weight: 700;
-  padding: 12px 24px;
-  background: rgba(20, 20, 20, 0.9);
-  border: 2px solid rgba(59, 153, 236, 0.4);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6), 0 0 10px rgba(59, 153, 236, 0.2);
-  text-shadow: 0 0 8px rgba(59, 153, 236, 0.5);
+  font-size: 20px;
+  font-weight: 800;
+  padding: 14px 28px;
+  background: rgba(20, 20, 20, 0.95);
+  border: 2px solid rgba(59, 153, 236, 0.6);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(59, 153, 236, 0.4);
+  text-shadow: 0 0 12px rgba(59, 153, 236, 0.7), 0 2px 4px rgba(0, 0, 0, 0.8);
   color: #ffffff;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+  border-radius: 8px;
 }
 
 .box:before {
@@ -297,19 +301,19 @@ body * {
 
 .carhud {
   position: fixed;
-  right: 5px;
-  bottom: 5px;
+  right: 2px;
+  bottom: 2px;
   transition: 0.3s;
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 35px;
 }
 .carhud .speedometer {
   position: relative;
   width: 300px;
   aspect-ratio: 1/1;
   transform: scale(0.6);
-  margin-right: 25px;
+  margin-right: 15px;
   background: rgba(20, 20, 20, 0.8);
   border-radius: 50%;
   border: 2px solid rgba(59, 153, 236, 0.3);
@@ -374,7 +378,7 @@ body * {
 /* Gear display styling */
 .carhud .gear-display {
   position: absolute;
-  bottom: -80px;
+  bottom: -70px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -411,8 +415,8 @@ body * {
   display: flex;
   flex-direction: column;
   align-items: end;
-  bottom: -180px;
-  right: -20px;
+  bottom: -170px;
+  right: -15px;
 }
 .carhud .location .direction {
   display: flex;
@@ -1003,7 +1007,30 @@ div[style*="background: rgb(0, 100, 255)"],
 /* Hide any bottom bars in minimap area */
 .minimap > div:last-child[style*="bottom"],
 #minimapContainer > div:last-child[style*="bottom"],
-[data-minimap="true"] > div:last-child[style*="bottom"] {
+[data-minimap="true"] > div:last-child[style*="bottom"],
+/* Additional GTA Online element hiding */
+.minimap [class*="hud"],
+.minimap [class*="bar"],
+.minimap [class*="counter"],
+.minimap [class*="meter"],
+#minimapContainer [class*="hud"],
+#minimapContainer [class*="bar"],
+#minimapContainer [class*="counter"],
+#minimapContainer [class*="meter"],
+[data-minimap="true"] [class*="hud"],
+[data-minimap="true"] [class*="bar"],
+[data-minimap="true"] [class*="counter"],
+[data-minimap="true"] [class*="meter"],
+/* Hide money/bank displays */
+.minimap [id*="money"],
+.minimap [id*="bank"],
+.minimap [id*="cash"],
+#minimapContainer [id*="money"],
+#minimapContainer [id*="bank"],
+#minimapContainer [id*="cash"],
+[data-minimap="true"] [id*="money"],
+[data-minimap="true"] [id*="bank"],
+[data-minimap="true"] [id*="cash"] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;

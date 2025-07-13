@@ -1,5 +1,7 @@
 local ESX = exports["es_extended"]:getSharedObject()
-cache = {}
+cache = cache or {}
+cache.player = cache.player or {}
+cache.player.ped = PlayerPedId()
 local client = {}
 
 client.setupScript = function()
@@ -14,8 +16,9 @@ RegisterNetEvent('esx:playerLoaded', client.setupScript)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1000) -- co sekundę
-
-        local playerPed = PlayerPedId()
+        
+        cache.player.ped = PlayerPedId()
+        local playerPed = cache.player.ped
         local health = GetEntityHealth(playerPed) - 100
         local armor = GetPedArmour(playerPed)
 
