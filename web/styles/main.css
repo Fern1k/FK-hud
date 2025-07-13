@@ -301,8 +301,8 @@ body * {
 
 .carhud {
   position: fixed;
-  right: 2px;
-  bottom: 2px;
+  right: 0px;
+  bottom: 0px;
   transition: 0.3s;
   display: flex;
   align-items: center;
