@@ -112,11 +112,34 @@ RegisterNetEvent('esx:setAccountMoney', updatePlayerCash)
 
 -- Voice range key detection
 CreateThread(function()
+    local lastVoiceRangeCheck = 0
     while true do
-        Wait(100) -- More efficient than Wait(0)
+        Wait(50) -- More responsive detection
+        
+        -- Check for F5 key press (instant voice range display)
         if IsControlJustPressed(0, 166) then -- F5 key
-            -- The voice range change will be handled by pma-voice:setTalkingMode event
-            -- This is just to ensure we capture manual F5 presses
+            -- Show current voice range when F5 is pressed
+            if cache.player.voice then
+                SendNUIMessage({
+                    action = 'showVoiceRange',
+                    range = cache.player.voice
+                })
+            end
+        end
+        
+        -- Check if player is holding any voice range modification keys
+        -- This covers various voice systems that might use different keys
+        if IsControlPressed(0, 166) then -- F5 held
+            local currentTime = GetGameTimer()
+            if currentTime - lastVoiceRangeCheck > 500 then -- Show every 500ms while held
+                if cache.player.voice then
+                    SendNUIMessage({
+                        action = 'showVoiceRange',
+                        range = cache.player.voice
+                    })
+                end
+                lastVoiceRangeCheck = currentTime
+            end
         end
     end
 end)
