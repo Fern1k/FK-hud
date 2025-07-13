@@ -16,6 +16,11 @@ const streetElements = document.querySelectorAll('[street]');
 const speedElements = document.querySelectorAll('[speed]');
 const gearElement = document.querySelector('[gear]');
 const tunroverBarElement = document.querySelector('[turnoverBar]');
+const voiceRangeIndicator = document.querySelector('#voiceRangeIndicator');
+const voiceRangeValue = document.querySelector('.range-value');
+
+// Voice range indicator timer
+let voiceRangeTimer = null;
 
 // Functions
 const setHudElement = (element, fill) => {
@@ -70,6 +75,37 @@ const directions = {
 const cache = {
     gear: 0
 };
+
+// Voice range indicator functions
+const showVoiceRangeIndicator = (range) => {
+    if (!voiceRangeIndicator || !voiceRangeValue) return;
+    
+    // Clear any existing timer
+    if (voiceRangeTimer) {
+        clearTimeout(voiceRangeTimer);
+    }
+    
+    // Update the range value
+    voiceRangeValue.textContent = `${range}m`;
+    
+    // Show the indicator
+    voiceRangeIndicator.classList.remove('hidden');
+    voiceRangeIndicator.classList.add('visible');
+    
+    // Hide after 3 seconds
+    voiceRangeTimer = setTimeout(() => {
+        voiceRangeIndicator.classList.remove('visible');
+        voiceRangeIndicator.classList.add('hidden');
+    }, 3000);
+};
+
+const onVoiceRange = ({ data }) => {
+    if (data.action !== 'showVoiceRange') return;
+    
+    if (data.range) {
+        showVoiceRangeIndicator(data.range);
+    }
+};
 const onCarHudUpdate = ({ data }) => {
     var _a;
     if (data.action !== 'updateCarhud')
@@ -117,3 +153,4 @@ const onCarHudUpdate = ({ data }) => {
 window.addEventListener('message', onUpdate);
 window.addEventListener('message', onVoiceActive);
 window.addEventListener('message', onCarHudUpdate);
+window.addEventListener('message', onVoiceRange);

@@ -79,6 +79,17 @@ body * {
   margin-top: -5px;
 }
 
+.watermark .right .server-logo {
+  height: 48px;
+  width: auto;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
 .watermark .right .id {
   font-weight: 700;
 }
@@ -97,7 +108,8 @@ body * {
 
 .hud-container.new {
   bottom: 16px;
-  left: 16px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .hud-container .element {
@@ -818,6 +830,182 @@ body * {
 
 .classic .rpm {
   position: fixed;
+}
+
+/* Minimap styling - positioned to bottom-left with minimalist design */
+.minimap {
+  position: fixed !important;
+  bottom: 20px !important;
+  left: 20px !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: rgba(20, 20, 20, 0.6) !important;
+  backdrop-filter: blur(4px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* GTA V radar element targeting */
+#minimapContainer,
+[data-minimap="true"],
+.minimap-container {
+  position: fixed !important;
+  bottom: 20px !important;
+  left: 20px !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: rgba(20, 20, 20, 0.6) !important;
+  backdrop-filter: blur(4px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Ensure minimap blips and elements maintain visibility */
+.minimap .blip,
+#minimapContainer .blip,
+[data-minimap="true"] .blip {
+  opacity: 0.9 !important;
+}
+
+/* Responsive minimap sizing */
+@media only screen and (max-width: 1300px) {
+  .minimap,
+  #minimapContainer,
+  [data-minimap="true"],
+  .minimap-container {
+    bottom: 15px !important;
+    left: 15px !important;
+    border-radius: 10px !important;
+  }
+}
+
+@media only screen and (max-width: 850px) {
+  .minimap,
+  #minimapContainer,
+  [data-minimap="true"],
+  .minimap-container {
+    bottom: 10px !important;
+    left: 10px !important;
+    border-radius: 8px !important;
+  }
+}
+
+/* Voice Range Indicator */
+.voice-range-indicator {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.voice-range-indicator.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.voice-range-indicator.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.voice-range-circle {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 153, 236, 0.2) 0%, rgba(59, 153, 236, 0.1) 40%, rgba(59, 153, 236, 0.05) 70%, transparent 100%);
+  border: 3px solid rgba(59, 153, 236, 0.6);
+  box-shadow: 
+    0 0 30px rgba(59, 153, 236, 0.4),
+    inset 0 0 30px rgba(59, 153, 236, 0.1);
+  animation: voiceRangePulse 2s ease-in-out infinite;
+  position: relative;
+}
+
+.voice-range-circle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: #3b99ec;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(59, 153, 236, 0.8);
+}
+
+.voice-range-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  color: #3b99ec;
+  text-shadow: 0 0 10px rgba(59, 153, 236, 0.5);
+}
+
+.voice-range-text .range-value {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.voice-range-text .range-label {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+@keyframes voiceRangePulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+}
+
+/* Responsive sizing for voice range indicator */
+@media only screen and (max-width: 1300px) {
+  .voice-range-circle {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .voice-range-text .range-value {
+    font-size: 20px;
+  }
+  
+  .voice-range-text .range-label {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-width: 850px) {
+  .voice-range-circle {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .voice-range-text .range-value {
+    font-size: 18px;
+  }
+  
+  .voice-range-text .range-label {
+    font-size: 11px;
+  }
 }
 
 
