@@ -14,7 +14,7 @@ const directionElements = document.querySelectorAll('[direction]');
 const headingElement = document.querySelector('[heading]');
 const streetElements = document.querySelectorAll('[street]');
 const speedElements = document.querySelectorAll('[speed]');
-const gearElement = document.querySelector('[gear]');
+const gearElements = document.querySelectorAll('[gear]');
 const tunroverBarElement = document.querySelector('[turnoverBar]');
 const fuelElement = document.querySelector('[fuel]');
 
@@ -102,7 +102,7 @@ const onCarHudUpdate = ({ data }) => {
         setValueForAll(`${data.speed}`, speedElements);
     }
     if (data.gear) {
-        gearElement.innerText = data.gear;
+        setValueForAll(data.gear, gearElements);
         cache.gear = data.gear;
     }
     if (data.tunrover) {
